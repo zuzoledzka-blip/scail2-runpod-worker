@@ -1,5 +1,7 @@
 FROM runpod/worker-comfyui:5.8.5-base
 
+RUN cd /comfyui && git pull && pip install --no-cache-dir -r requirements.txt
+
 WORKDIR /comfyui/custom_nodes
 
 RUN git clone https://github.com/city96/ComfyUI-GGUF.git && \
