@@ -1,6 +1,6 @@
 FROM runpod/worker-comfyui:5.8.5-base
 
-RUN cd /comfyui && git pull && pip install --no-cache-dir -r requirements.txt
+RUN cd /comfyui && git fetch origin main && git checkout main && git reset --hard origin/main && pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /comfyui/custom_nodes
 
