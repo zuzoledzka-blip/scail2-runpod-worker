@@ -1,7 +1,6 @@
 FROM runpod/worker-comfyui:5.8.5-base
 
-RUN cd /comfyui && git fetch origin main && git checkout main && git reset --hard origin/main && pip install --no-cache-dir -r requirements.txt
-
+RUN RUN cd /comfyui && git config --global --add safe.directory /comfyui && (git fetch --unshallow origin main || git fetch origin main) && git checkout main && git reset --hard origin/main && pip install --no-cache-dir -r requirements.txt
 WORKDIR /comfyui/custom_nodes
 
 RUN git clone https://github.com/city96/ComfyUI-GGUF.git && \
