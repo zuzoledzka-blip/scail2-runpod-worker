@@ -24,3 +24,12 @@ RUN git clone https://github.com/rgthree/rgthree-comfy.git && \
 WORKDIR /comfyui
 
 COPY extra_model_paths.yaml /comfyui/extra_model_paths.yaml
+
+# Patched handler: the stock runpod/worker-comfyui handler only collects node
+# outputs under the "images" key, so VHS_VideoCombine's video output (saved
+# under "gifs") was silently dropped ("success_no_images" despite a working
+# render). This version also handles "gifs" and uploads it to bucket storage
+# (R2/S3, via BUCKET_ENDPOINT_URL/BUCKET_ACCESS_KEY_ID/BUCKET_SECRET_ACCESS_KEY/
+# BUCKET_NAME env vars on the endpoint) instead of returning it as base64,
+# which is what overflowed RunPod's response size limit before.
+COPY handler.py /handler.py
