@@ -21,6 +21,13 @@ RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git && \
 RUN git clone https://github.com/rgthree/rgthree-comfy.git && \
     if [ -f rgthree-comfy/requirements.txt ]; then pip install --no-cache-dir -r rgthree-comfy/requirements.txt; fi
 
+# SCAIL-2 Infinity: all-in-one chunked long-video node (81-frame windows,
+# 5-frame overlap, reuses core WanSCAILToVideo.execute() + common_ksampler()
+# internally) — lets a single job generate arbitrarily long video at constant
+# VRAM instead of allocating for the whole requested length at once.
+RUN git clone https://github.com/collbroGTR/comfyui-scail2-infinity.git && \
+    if [ -f comfyui-scail2-infinity/requirements.txt ]; then pip install --no-cache-dir -r comfyui-scail2-infinity/requirements.txt; fi
+
 WORKDIR /comfyui
 
 COPY extra_model_paths.yaml /comfyui/extra_model_paths.yaml
