@@ -2,7 +2,11 @@ FROM runpod/worker-comfyui:5.8.5-base
 
 RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
 
-RUN rm -rf /comfyui && git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui && cd /comfyui && pip install --no-cache-dir -r requirements.txt
+# cache-bust: 2026-09-11-scail2-infinity — forces a fresh ComfyUI core clone
+# below (Docker was reusing an old cached layer since this line's text hadn't
+# changed, which caused comfy_api.latest/ComfyExtension — needed later by
+# comfyui-scail2-infinity — to be missing from the stale cached core).
+RUN rm -rf /comfyui && git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui && cd /comfyui && pip install --no-cache-dir -r requirements.txt && echo "cachebust-2026-09-11-scail2-infinity"
 
 WORKDIR /comfyui/custom_nodes
 
